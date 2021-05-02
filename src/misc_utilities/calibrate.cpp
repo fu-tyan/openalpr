@@ -20,7 +20,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui/highgui_c.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 
@@ -230,12 +230,21 @@ void initialize_variables()
 
 void create_window()
 {
-  namedWindow(WINDOW_NAME, CV_WINDOW_AUTOSIZE | CV_WINDOW_KEEPRATIO | CV_GUI_EXPANDED);
+  namedWindow(WINDOW_NAME, WINDOW_AUTOSIZE | WINDOW_KEEPRATIO | WINDOW_GUI_EXPANDED);
   
+  value = round(-(rotationx * 20000.0) + 100);
   createTrackbar( "X", WINDOW_NAME, &value, 200,  XChange);
+
+  value = round(rotationy * 20000.0 + 100);
   createTrackbar( "Y", WINDOW_NAME, &value, 200,  YChange);
+
+  value = round(-(rotationz * 100.0) + 100);
   createTrackbar( "Z", WINDOW_NAME, &value, 200,  ZChange);
+
+  value = round((stretchX - 1.0) * -200.0 + 100);
   createTrackbar( "W", WINDOW_NAME, &value, 200,  StretchChange);
+
+  value = round(-((dist - 1.0) * 200.0) + 100);
   createTrackbar( "D", WINDOW_NAME, &value, 200,  DistChange);
   
   setMouseCallback(WINDOW_NAME, mouse_callback, NULL);
@@ -408,7 +417,7 @@ int main(int argc, char** argv) {
 
   }
 
-  cvDestroyAllWindows();
+  destroyAllWindows();
   
   
   return 0;
